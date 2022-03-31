@@ -43,9 +43,10 @@ const Auth = () => {
     const handleSubmit = async (e:any) => {
         e.preventDefault();
         if (isSignup === false) {
-            dispatch(loginUser(formData)).then(response => {
-                navigate('/tickets');
-                window.location.reload();
+            await dispatch(loginUser(formData)).then(response => {
+                console.log(response);
+                // navigate('/tickets');
+                // window.location.reload();
             }).catch(error => {
                 console.log(error);
             });

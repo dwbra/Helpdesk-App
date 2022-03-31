@@ -149,7 +149,7 @@ class User {
         }
         //If we are here, it means the authentication failed
         
-        $msg = 'Your login was unsuccessful. Incorrect Password';
+        $msg = 'Your login was unsuccessful.';
         $error = new stdClass();
         $error->message = $msg;
         return json_encode($error);
