@@ -1,0 +1,77 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+:root {
+  --blue: rgb(23, 174, 255);
+}
+
+.authform {
+  display: grid;
+  width: 400px;
+}
+
+.authform input {
+  height: 40px;
+  padding-left: 15px;
+}
+
+.ticketform {
+  display: grid;
+  max-width: 800px;
+}
+
+.ticketform input[type="text"],
+.ticketform select {
+  height: 40px;
+  margin-bottom: 10px;
+  padding: 0 12px;
+}
+
+.ticketform textarea {
+  height: 150px;
+  margin-bottom: 20px;
+  padding: 10px 12px;
+}
+
+.ticketform button[type="button"] {
+  background-color: var(--blue);
+  padding: 10px 16px;
+  border: 1px solid var(--blue);
+  font-weight: 600;
+}
+
+.ticketform button[type="button"]:hover{
+  background-color: transparent;
+  border: 1px solid var(--blue);
+}
+
+.ticketform button[type="submit"] {
+  margin-top: 10px;
+  padding: 10px 16px;
+  background-color: #111;
+  color: #fff;
+  border: 1px solid #111;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.ticketform button[type="submit"]:hover {
+  background-color: transparent;
+  color: #111;
+  border: 1px solid #111;
+}
+
+.image-item__btn-wrapper button {
+  margin-right: 5px;
+}
