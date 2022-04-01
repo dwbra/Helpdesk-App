@@ -22,8 +22,10 @@ interface CreateTicket {
 
 interface CreateTicketResponseData {
   error: string;
-  status: string;
+  status: number;
+  message: string;
 }
+
 export const createTicket = (ticketData: CreateTicket) =>
   API.post<CreateTicketResponseData>("/api/new_ticket_form.php", ticketData);
 // export const updateListing = (id, updatedListing) => API.patch(`/listings/${id}`, updatedListing);
