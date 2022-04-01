@@ -1,12 +1,12 @@
 <?php
 //include the db connection and auth class
-require_once '../index.php'; 
+require_once '../index.php';
 require_once './form_class.php';
 
 //declare globals and variables
 global $conn;
 //decode the raw data from the request body
-$post = json_decode(file_get_contents("php://input",true));
+$post = json_decode(file_get_contents("php://input", true));
 var_dump($post);
 
 $userId = $post->userId;
@@ -18,7 +18,7 @@ $website = $post->website;
 
 if (!$conn) {
     die("Connection failed: " . $conn->connect_error);
-  }
+}
 
 $formData = new Form();
 $formData->userId = $userId;
@@ -27,11 +27,5 @@ $formData->discipline = $discipline;
 $formData->message = $message;
 $formData->url = $website;
 
-// $result = $formData->submitTicket();
-// echo $result;
-
-if ($formData->submitTicket()) {
-  echo http_response_code(200);
-} else {
-  echo http_response_code(500);
-}
+$result = $formData->submitTicket();
+echo $result;
