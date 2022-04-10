@@ -23,6 +23,7 @@ const TicketForm = () => {
     message: "",
     website: "",
     ticketImages: [],
+    imageNames: {},
     userId: userId
   });
 
@@ -32,37 +33,35 @@ const TicketForm = () => {
       await axios
         .post("http://localhost:8000/api/s3.php", ticketData.ticketImages)
         .then((response) => {
-          //   console.log(response.data);
-          setTicketData({ ...ticketData, ticketImages: response.data });
-          console.log("ticketData below");
-          console.log(ticketData.ticketImages);
-          //check the http response from the server and alert user based on it
-          //   if (response.status === 200) {
-          //     console.log("Success! Your images have been uploaded.");
-          //   } else {
-          //     alert(
-          //       "Oops, something has gone wrong and your images may not have been uploaded."
-          //     );
-          //   }
-          // })
-          // .catch((error) => {
-          //   console.log(error);
-          //   if (error) {
-          //     return;
-          //   }
+          const data = response.data;
+          //   check the http response from the server and alert user based on it
+          if (response.status === 200) {
+            setTicketData({ ...ticketData, imageNames: data });
+            console.log("Success! Your images have been uploaded.");
+          } else {
+            alert(
+              "Oops, something has gone wrong and your images may not have been uploaded."
+            );
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error) {
+            return;
+          }
         });
-      //   dispatch(createTicket(ticketData)).then((response) => {
-      //     //check the response from the dispatch reducer to ensure it passed server validation
-      //     if (response.meta.requestStatus === "fulfilled") {
-      //       //   console.log(response);
-      //     } else {
-      //       //show the user the error message from the server
-      //       alert(response.payload);
-      //     }
-      //   });
+      dispatch(createTicket(ticketData)).then((response) => {
+        //check the response from the dispatch reducer to ensure it passed server validation
+        if (response.meta.requestStatus === "fulfilled") {
+          //   console.log(response);
+        } else {
+          //show the user the error message from the server
+          alert(response.payload);
+        }
+      });
     }
-    alert("Your ticket has been created!");
-    clear();
+    // alert("Your ticket has been created!");
+    // clear();
   };
 
   //function to clear state once form is submitted
@@ -73,7 +72,8 @@ const TicketForm = () => {
       message: "",
       ticketImages: [],
       website: "",
-      userId: userId
+      userId: userId,
+      imageNames: {}
     });
   };
 

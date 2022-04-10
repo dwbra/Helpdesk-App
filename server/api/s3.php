@@ -6,19 +6,18 @@ $apiKey = $_ENV['s3Key'];
 $apiSecret = $_ENV['s3Secret'];
 $bucket = 'clientportal2021';
 
-use Aws\S3\S3Client;
 use Aws\S3\Exception\S3Exception;
 
 $client = new \Aws\S3\S3Client([
     //change region to match the region of the bucket you're trying to access
     'version' => 'latest',
-    'region'  => 'ap-southeast-2',
+    'region' => 'ap-southeast-2',
     'credentials' => [
-        'key'    => $apiKey,
+        'key' => $apiKey,
         'secret' => $apiSecret,
-    ]
+    ],
 ]);
-$post = json_decode(file_get_contents("php://input",true));
+$post = json_decode(file_get_contents("php://input", true));
 // var_dump($post);
 
 $post_size = sizeof($post);
@@ -41,6 +40,7 @@ for ($i = 0; $i < $post_size; $i++) {
         // Catch an S3 specific exception.
         echo $e->getMessage();
     }
-};
+}
+;
 
-var_dump($keyArray);
+echo json_encode($keyArray);
