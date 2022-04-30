@@ -37,7 +37,7 @@ const TicketForm = () => {
           //   check the http response from the server and alert user based on it
           if (response.status === 200) {
             setTicketData({ ...ticketData, imageNames: data });
-            console.log("Success! Your images have been uploaded.");
+            // console.log("Success! Your images have been uploaded.");
           } else {
             alert(
               "Oops, something has gone wrong and your images may not have been uploaded."
@@ -51,17 +51,21 @@ const TicketForm = () => {
           }
         });
       dispatch(createTicket(ticketData)).then((response) => {
+        // console.log(response);
+        // console.log(ticketData.imageNames);
         //check the response from the dispatch reducer to ensure it passed server validation
         if (response.meta.requestStatus === "fulfilled") {
           //   console.log(response);
+          // console.log("Success! Your ticket has been dispatched.");
         } else {
           //show the user the error message from the server
           alert(response.payload);
         }
       });
     }
-    // alert("Your ticket has been created!");
-    // clear();
+    //update to be a modal popup instead of an alert
+    alert("Your ticket has been created!");
+    clear();
   };
 
   //function to clear state once form is submitted

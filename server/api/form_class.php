@@ -9,7 +9,7 @@ class Form
     public $url;
     public $discipline;
     public $message;
-    public $images;
+    public $imageNames;
 
     public function submitTicket()
     {
@@ -19,12 +19,14 @@ class Form
         //Trim whitespace and use PHP inbuilt filters to sanitize inputs
         $userId = trim($this->userId);
         $title = trim($this->title);
-        $title = filter_var($title, FILTER_SANITIZE_STRING);
+        $title = htmlspecialchars($title, ENT_QUOTES);
         $url = trim($this->url);
         $url = filter_var($url, FILTER_SANITIZE_URL);
         $discipline = trim($this->discipline);
         $message = trim($this->message);
-        $message = filter_var($message, FILTER_SANITIZE_STRING);
+        $message = htmlspecialchars($message, ENT_QUOTES);
+        //store array data using serialize function. To view data need to use unserialize function.
+        $imageNames = serialize($this->imageNames);
 
         //check that a db connection to the table has been established
         if ($conn->connect_error) {
@@ -33,20 +35,29 @@ class Form
             return json_encode($conn_status);
         }
 
+        //place the ticket info into the ticket DB table
         //prepare the sql statement. Use use ? as placeholders
-        $sql = "INSERT INTO tickets (title, msg, user_id, url, discipline) VALUES (?,?,?,?,?)";
+        $sql = "INSERT INTO ticket (title, msg, ticket_user_id, url, discipline) VALUES (?,?,?,?,?)";
         //prepare the sql query and create a statement result from the query
         $statement = $conn->prepare($sql);
         //bind the params to the statement. s is for string type, i for int.
         $statement->bind_param("ssiss", $title, $message, $userId, $url, $discipline);
         //actually execute the the query by sending the variables to the db
         $statement->execute();
-        // var_dump($statement);
+        //grab the id of the column by the last query
+        $insert_id = $statement->insert_id;
+
+        //place the image names into the tickets_images DB table
+        //use the newly created ticket id and pass into the ticket_image table
+        $sql1 = "INSERT INTO ticket_images (images, ticket_images_ticket_id) VALUES (?,?)";
+        $statement1 = $conn->prepare($sql1);
+        $statement1->bind_param("ss", $imageNames, $insert_id);
+        $statement1->execute();
 
         $ticket_info = new stdClass();
 
         //return false to notify request that submission failed
-        if (!$statement) {
+        if (!$statement && !$statement1) {
             $ticket_info->status = 401;
             $ticket_info->message = "Adding a new ticket to the database has failed. Please try again or contact the system admin.";
             return json_encode($ticket_info);
