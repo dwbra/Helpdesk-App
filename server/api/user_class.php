@@ -83,7 +83,7 @@ class User
         }
 
         //prepare the sql statement. Use use ? as placeholders
-        $sql = "INSERT INTO portal_users (name, email, password) VALUES (?,?,?)";
+        $sql = "INSERT INTO users (name, email, password) VALUES (?,?,?)";
         //prepare the sql query and create a statement result from the query
         $statement = $conn->prepare($sql);
         //bind the params to the statement. s is for string type.
@@ -133,7 +133,7 @@ class User
         $password = htmlspecialchars($password, ENT_QUOTES);
 
         //prepare the sql statement. Use use ? as placeholders
-        $sql = "SELECT * FROM portal_users WHERE email = ?";
+        $sql = "SELECT * FROM users WHERE email = ?";
         //prepare the sql query and create a statement result from the query
         $statement = $conn->prepare($sql);
         //bind the params to the statement. s is for string type.
