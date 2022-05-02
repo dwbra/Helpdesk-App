@@ -11,13 +11,24 @@ const initialState: TicketState = {
   error: "No error"
 };
 
-// export const fetchTicket = createAsyncThunk('user/createUser', async (formData:CreateUserFormData) => {
-//     const response = await api.signUp(formData);
-//     const data = response.data;
-//     // console.log((data));
-//     localStorage.setItem("profile", JSON.stringify(data));
-//     return data;
-// });
+interface FetchTickets {
+  userId: number;
+}
+
+export const fetchTickets = createAsyncThunk(
+  "ticket/fetchTicket",
+  async (userId: FetchTickets) => {
+    const response = await api.fetchTickets(userId);
+    const status = response.status;
+    if (status === 200) {
+      //we need to resolve the promise in the thunk so that the extraReducer knows to use the 'fulfilled' action type
+      return Promise.resolve(response.data);
+    } else {
+      //we need to reject the promise in the thunk so that the extraReducer knows which action type to use
+      return Promise.reject(response.data.message);
+    }
+  }
+);
 
 interface CreateTicket {
   title: string;
@@ -26,6 +37,7 @@ interface CreateTicket {
   website: string;
   ticketImages: {}[];
   userId: number;
+  imageNames: {};
 }
 
 export const createTicket = createAsyncThunk(
@@ -55,14 +67,12 @@ export const ticketsSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers(builder) {
-    // builder.addCase(fetchTicket.fulfilled, (state, {payload}) => {
-    //     state.status = "fulfilled";
-    //     state.users.push({id: payload.id, email:payload.email});
-    // })
-    // builder.addCase(fetchTicket.rejected, (state, action) => {
-    //     state.status = 'failed';
-    //     state.error = action.error.message!
-    // })
+    builder.addCase(fetchTickets.fulfilled, (state, action) => {
+      state.status = "fulfilled";
+    });
+    builder.addCase(fetchTickets.rejected, (state, action) => {
+      state.status = "failed";
+    });
     builder.addCase(createTicket.fulfilled, (state, action) => {
       state.status = "fulfilled";
     });
