@@ -9,7 +9,23 @@ const API = axios.create({ baseURL: "http://localhost:8000" });
 //     return req;
 // });
 
-// export const fetchTicket = () => API.get('/listings');
+interface FetchTickets {
+  userId: number;
+}
+
+interface FetchTicketResponseData {
+  title: string;
+  discipline: string;
+  website: string;
+  userId: number;
+  ticketId: number;
+  ticketStatus: string;
+  created: string;
+  message: string;
+}
+
+export const fetchTickets = (userId: FetchTickets) =>
+  API.post<FetchTicketResponseData>("/api/get_all_user_tickets.php", userId);
 
 interface CreateTicket {
   title: string;
@@ -18,6 +34,7 @@ interface CreateTicket {
   website: string;
   ticketImages: {}[];
   userId: number;
+  imageNames: {};
 }
 
 interface CreateTicketResponseData {
@@ -25,13 +42,6 @@ interface CreateTicketResponseData {
   status: number;
   message: string;
 }
-
-// interface S3Images {
-//   image: {}[];
-// }
-
-// export const saveImages = (: CreateTicket) =>
-//   API.post<CreateTicketResponseData>("/api/new_ticket_form.php", ticketData);
 
 export const createTicket = (ticketData: CreateTicket) =>
   API.post<CreateTicketResponseData>("/api/new_ticket_form.php", ticketData);
