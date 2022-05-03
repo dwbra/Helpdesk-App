@@ -22,15 +22,38 @@ const GetTickets = () => {
   }, [userId]);
 
   return (
-    <div>
+    <div className="ticket__layout">
       {tickets.map((ticket) => (
-        <div>
-          <h1>{ticket["id"]}</h1>
-          <h1>{ticket["title"]}</h1>
-          <h2>{ticket["created"]}</h2>
-          <h2>{ticket["status"]}</h2>
-          <h2>{ticket["url"]}</h2>
-          <h2>{ticket["discipline"]}</h2>
+        <div className="ticket" key={ticket["id"]}>
+          <div className="ticket__data">
+            <h1>
+              ID: <span className="ticket__span">{ticket["id"]}</span>
+            </h1>
+            <h1>
+              Title: <span className="ticket__span">{ticket["title"]}</span>
+            </h1>
+            <h2>
+              Ticket Created:{" "}
+              <span className="ticket__span">{ticket["created"]}</span>
+            </h2>
+            <h2>
+              Ticket Status:{" "}
+              <span className="ticket__span ticket__status">
+                {ticket["status"]}
+              </span>
+            </h2>
+            <h2>
+              Website: <span className="ticket__span">{ticket["url"]}</span>
+            </h2>
+            <h2>
+              Discipline:{" "}
+              <span className="ticket__span">{ticket["discipline"]}</span>
+            </h2>
+          </div>
+          <div className="ticket__buttons">
+            <a href="">View ticket</a>
+            <a href="">Mark as complete</a>
+          </div>
         </div>
       ))}
     </div>
