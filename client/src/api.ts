@@ -9,6 +9,12 @@ const API = axios.create({ baseURL: "http://localhost:8000" });
 //     return req;
 // });
 
+//need to directly type a single param
+type FetchTicket = string | number;
+
+export const fetchTicket = (ticket_id: FetchTicket) =>
+  API.post<FetchTicketResponseData>("/api/get_single_ticket.php", ticket_id);
+
 interface FetchTickets {
   userId: number;
 }

@@ -11,6 +11,23 @@ const initialState: TicketState = {
   error: "No error"
 };
 
+type FetchTicket = string | number;
+
+export const fetchTicket = createAsyncThunk(
+  "ticket/fetchSingleTicket",
+  async (ticket_id: FetchTicket) => {
+    const response = await api.fetchTicket(ticket_id);
+    const status = response.status;
+    if (status === 200) {
+      //we need to resolve the promise in the thunk so that the extraReducer knows to use the 'fulfilled' action type
+      return Promise.resolve(response.data);
+    } else {
+      //we need to reject the promise in the thunk so that the extraReducer knows which action type to use
+      return Promise.reject(response.data.message);
+    }
+  }
+);
+
 interface FetchTickets {
   userId: number;
 }
@@ -82,6 +99,12 @@ export const ticketsSlice = createSlice({
       state.error = action.error.message!;
       //set the payload as the rejected thunk error message
       action.payload = state.error;
+    });
+    builder.addCase(fetchTicket.fulfilled, (state, action) => {
+      state.status = "fulfilled";
+    });
+    builder.addCase(fetchTicket.rejected, (state, action) => {
+      state.status = "failed";
     });
     // builder.addCase(deleteTicket.fulfilled, (state, {payload}) => {
     //     state.status = "fulfilled";
