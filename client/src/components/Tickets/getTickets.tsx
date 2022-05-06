@@ -51,8 +51,8 @@ const GetTickets = () => {
             </h2>
           </div>
           <div className="ticket__buttons">
-            <a href="">View ticket</a>
-            <a href="">Mark as complete</a>
+            {/* send the user to a unique page with the ticket_id param to be used to pull individual data from the server */}
+            <a href={`/tickets/${ticket["id"]}`}>View ticket</a>
           </div>
         </div>
       ))}

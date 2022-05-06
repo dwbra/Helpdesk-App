@@ -11,6 +11,7 @@ class Form
     public $message;
     public $imageNames;
     public $ticket_status;
+    public $ticket_id;
 
     public function submitTicket()
     {
@@ -127,7 +128,50 @@ class Form
 
     public function get_single_ticket()
     {
+        /* Global $conn*/
+        global $conn;
 
+        $ticket_id = $this->ticket_id;
+
+        //check that a db connection to the table has been established
+        if ($conn->connect_error) {
+            $conn_status = new stdClass();
+            $conn_status->message = "Connection failed: " . $conn->connect_error;
+            return json_encode($conn_status);
+        }
+
+        $sql = "SELECT * FROM ticket WHERE id = (?)";
+        $statement = $conn->prepare($sql);
+        $statement->bind_param("i", $ticket_id);
+        $statement->execute();
+        $result = $statement->get_result();
+
+        $ticket_info = new stdClass();
+        //return false to notify request that submission failed
+        if (!$statement) {
+            $ticket_info->status = 401;
+            $ticket_info->message = "Fetching ticket data has failed. Please try again or contact the system admin.";
+            return json_encode($ticket_info);
+        }
+
+        //close the database connection
+        $conn->close();
+
+        //return a successful status
+        $ticket_info->status = 200;
+        $ticket_info->rows = [];
+
+        if ($result->num_rows > 0) {
+            // output data of each row
+            while ($row = $result->fetch_assoc()) {
+                // print_r($row);
+                array_push($ticket_info->rows, $row);
+            }
+        } else {
+            $ticket_info->rows = "0 results";
+        }
+
+        return json_encode($ticket_info);
     }
 
     public function change_ticket_status()
