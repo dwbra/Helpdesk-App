@@ -122,7 +122,6 @@ class Form
         } else {
             $ticket_info->rows = "0 results";
         }
-
         return json_encode($ticket_info);
     }
 
