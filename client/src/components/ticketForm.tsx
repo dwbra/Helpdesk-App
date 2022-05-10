@@ -27,16 +27,36 @@ const TicketForm = () => {
     userId: userId
   });
 
+  // useEffect(() => {
+
+  // }, []);
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (ticketFormValidation(ticketData) === true) {
       await axios
         .post("http://localhost:8000/api/s3.php", ticketData.ticketImages)
         .then((response) => {
+          console.log(response.data);
           const data = response.data;
           //   check the http response from the server and alert user based on it
           if (response.status === 200) {
-            setTicketData({ ...ticketData, imageNames: data });
+            const updatedTicket = { ...ticketData, imageNames: data };
+            setTicketData(updatedTicket);
+            // console.log(ticketData.imageNames);
+            // setTicketData({ ...ticketData, imageNames: data });
+            dispatch(createTicket(updatedTicket)).then((response) => {
+              console.log(response);
+              // console.log(ticketData.imageNames);
+              //check the response from the dispatch reducer to ensure it passed server validation
+              if (response.meta.requestStatus === "fulfilled") {
+                //   console.log(response);
+                // console.log("Success! Your ticket has been dispatched.");
+              } else {
+                //show the user the error message from the server
+                alert(response.payload);
+              }
+            });
             // console.log("Success! Your images have been uploaded.");
           } else {
             alert(
@@ -50,22 +70,10 @@ const TicketForm = () => {
             return;
           }
         });
-      dispatch(createTicket(ticketData)).then((response) => {
-        // console.log(response);
-        // console.log(ticketData.imageNames);
-        //check the response from the dispatch reducer to ensure it passed server validation
-        if (response.meta.requestStatus === "fulfilled") {
-          //   console.log(response);
-          // console.log("Success! Your ticket has been dispatched.");
-        } else {
-          //show the user the error message from the server
-          alert(response.payload);
-        }
-      });
     }
     //update to be a modal popup instead of an alert
     alert("Your ticket has been created!");
-    clear();
+    // clear();
   };
 
   //function to clear state once form is submitted

@@ -15,9 +15,7 @@ type FetchTicket = string | number;
 export const fetchTicket = (ticket_id: FetchTicket) =>
   API.post<FetchTicketResponseData>("/api/get_single_ticket.php", ticket_id);
 
-interface FetchTickets {
-  userId: number;
-}
+type FetchTickets = number | string;
 
 interface FetchTicketResponseData {
   title: string;

@@ -28,9 +28,7 @@ export const fetchTicket = createAsyncThunk(
   }
 );
 
-interface FetchTickets {
-  userId: number;
-}
+type FetchTickets = number | string;
 
 export const fetchTickets = createAsyncThunk(
   "ticket/fetchTicket",
