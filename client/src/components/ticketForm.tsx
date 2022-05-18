@@ -1,7 +1,5 @@
 import React, { useEffect, useState, CSSProperties } from "react";
-import { WebsiteMargin } from "../styled/styled";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import ImageUploading from "react-images-uploading";
 import ticketFormValidation from "../validations/ticketForm";
 
@@ -11,11 +9,8 @@ import { useAppDispatch, useAppSelector } from "../store";
 
 const TicketForm = () => {
   const dispatch = useAppDispatch();
-  //initialise the useNavigate feature from react-router-dom
-  const navigate = useNavigate();
   //grab the users info from local storage
   const userId: any = JSON.parse(localStorage.getItem("profile")!).id;
-  // console.log(userId);
   //create the state for the ticket data and setter function
   const [ticketData, setTicketData] = useState({
     title: "",
@@ -27,10 +22,6 @@ const TicketForm = () => {
     userId: userId
   });
 
-  // useEffect(() => {
-
-  // }, []);
-
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (ticketFormValidation(ticketData) === true) {
@@ -39,25 +30,18 @@ const TicketForm = () => {
         .then((response) => {
           console.log(response.data);
           const data = response.data;
-          //   check the http response from the server and alert user based on it
           if (response.status === 200) {
             const updatedTicket = { ...ticketData, imageNames: data };
             setTicketData(updatedTicket);
-            // console.log(ticketData.imageNames);
-            // setTicketData({ ...ticketData, imageNames: data });
             dispatch(createTicket(updatedTicket)).then((response) => {
               console.log(response);
-              // console.log(ticketData.imageNames);
               //check the response from the dispatch reducer to ensure it passed server validation
               if (response.meta.requestStatus === "fulfilled") {
-                //   console.log(response);
-                // console.log("Success! Your ticket has been dispatched.");
               } else {
                 //show the user the error message from the server
                 alert(response.payload);
               }
             });
-            // console.log("Success! Your images have been uploaded.");
           } else {
             alert(
               "Oops, something has gone wrong and your images may not have been uploaded."
@@ -73,7 +57,7 @@ const TicketForm = () => {
     }
     //update to be a modal popup instead of an alert
     alert("Your ticket has been created!");
-    // clear();
+    clear();
   };
 
   //function to clear state once form is submitted
@@ -177,7 +161,7 @@ const TicketForm = () => {
               >
                 Click or Drop here
               </button>
-              &nbsp;
+              {/* &nbsp; */}
               <button type="button" onClick={onImageRemoveAll}>
                 Remove all images
               </button>
