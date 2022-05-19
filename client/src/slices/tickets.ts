@@ -28,6 +28,23 @@ export const fetchTicket = createAsyncThunk(
   }
 );
 
+type FetchMessages = number | string;
+
+export const fetchMessages = createAsyncThunk(
+  "ticket/fetchMessages",
+  async (ticketID: FetchMessages) => {
+    const response = await api.fetchMessages(ticketID);
+    const status = response.status;
+    if (status === 200) {
+      //we need to resolve the promise in the thunk so that the extraReducer knows to use the 'fulfilled' action type
+      return Promise.resolve(response.data);
+    } else {
+      //we need to reject the promise in the thunk so that the extraReducer knows which action type to use
+      return Promise.reject(response.data.message);
+    }
+  }
+);
+
 type FetchTickets = number | string;
 
 export const fetchTickets = createAsyncThunk(
@@ -59,6 +76,26 @@ export const createTicket = createAsyncThunk(
   "ticket/createTicket",
   async (ticketData: CreateTicket) => {
     const response = await api.createTicket(ticketData);
+    const status = response.status;
+    if (status === 200) {
+      //we need to resolve the promise in the thunk so that the extraReducer knows to use the 'fulfilled' action type
+      return Promise.resolve(response.data);
+    } else {
+      //we need to reject the promise in the thunk so that the extraReducer knows which action type to use
+      return Promise.reject(response.data.message);
+    }
+  }
+);
+
+interface CreateTicketComment {
+  comment: string;
+  ticketID: string | undefined;
+}
+
+export const createTicketComment = createAsyncThunk(
+  "ticket/createTicketComment",
+  async (commentData: CreateTicketComment) => {
+    const response = await api.createTicketComment(commentData);
     const status = response.status;
     if (status === 200) {
       //we need to resolve the promise in the thunk so that the extraReducer knows to use the 'fulfilled' action type
@@ -102,6 +139,18 @@ export const ticketsSlice = createSlice({
       state.status = "fulfilled";
     });
     builder.addCase(fetchTicket.rejected, (state, action) => {
+      state.status = "failed";
+    });
+    builder.addCase(fetchMessages.fulfilled, (state, action) => {
+      state.status = "fulfilled";
+    });
+    builder.addCase(fetchMessages.rejected, (state, action) => {
+      state.status = "failed";
+    });
+    builder.addCase(createTicketComment.fulfilled, (state, action) => {
+      state.status = "fulfilled";
+    });
+    builder.addCase(createTicketComment.rejected, (state, action) => {
       state.status = "failed";
     });
     // builder.addCase(deleteTicket.fulfilled, (state, {payload}) => {

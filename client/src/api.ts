@@ -15,6 +15,11 @@ type FetchTicket = string | number;
 export const fetchTicket = (ticket_id: FetchTicket) =>
   API.post<FetchTicketResponseData>("/api/get_single_ticket.php", ticket_id);
 
+type FetchMessages = string | number;
+
+export const fetchMessages = (ticketID: FetchMessages) =>
+  API.post<FetchTicketResponseData>("/api/get_messages.php", ticketID);
+
 type FetchTickets = number | string;
 
 interface FetchTicketResponseData {
@@ -51,6 +56,23 @@ export const createTicket = (ticketData: CreateTicket) =>
   API.post<CreateTicketResponseData>("/api/new_ticket_form.php", ticketData);
 // export const updateListing = (id, updatedListing) => API.patch(`/listings/${id}`, updatedListing);
 // export const deleteListing = (id) => API.delete(`/listings/${id}`);
+
+interface CreateTicketCommentResponse {
+  error: string;
+  status: number;
+  message: string;
+}
+
+interface CreateTicketComment {
+  comment: string;
+  ticketID: string | undefined;
+}
+
+export const createTicketComment = (commentData: CreateTicketComment) =>
+  API.post<CreateTicketCommentResponse>(
+    "/api/new_ticket_comment.php",
+    commentData
+  );
 
 interface CreateUserFormData {
   name: string;
