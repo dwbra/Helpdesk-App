@@ -9,7 +9,7 @@ const GetTickets = () => {
 
   //create a new piece of state to store the API response data into.
   const [tickets, setTickets] = useState([]);
-  console.log(typeof tickets);
+  // console.log(typeof tickets);
   //Store API call inside useEffect hook to only render once on component mount.
   useEffect(() => {
     if (!userId) {

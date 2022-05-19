@@ -12,9 +12,7 @@ code {
     monospace;
 }
 
-:root {
-  --blue: rgb(23, 174, 255);
-}
+$blue: rgb(23, 174, 255);
 
 .authform {
   display: grid;
@@ -45,15 +43,15 @@ code {
 }
 
 .ticketform button[type="button"] {
-  background-color: var(--blue);
+  background-color: $blue;
   padding: 10px 16px;
-  border: 1px solid var(--blue);
+  border: 1px solid $blue;
   font-weight: 600;
 }
 
 .ticketform button[type="button"]:hover {
   background-color: transparent;
-  border: 1px solid var(--blue);
+  border: 1px solid $blue;
 }
 
 .ticketform button[type="submit"] {
@@ -92,12 +90,77 @@ code {
   }
   &__buttons {
     a {
-      background-color: var(--blue);
+      background-color: $blue;
       padding: 10px 16px;
-      border: 1px solid var(--blue);
+      border: 1px solid $blue;
       font-weight: 600;
       width: 100px;
       margin-right: 20px;
     }
+  }
+}
+
+.singleticket {
+  background-color: antiquewhite;
+  padding: 0 15px;
+  padding-bottom: 40px;
+  &__ticket {
+    display: flex;
+    flex-direction: row;
+  }
+  &__data {
+    flex: 60%;
+    order: 1;
+  }
+  &__buttons {
+    flex: 40%;
+    order: 2;
+  }
+  &__msg {
+    background: $blue;
+    height: auto;
+    min-height: 50px;
+    margin: 10px 0;
+    padding: 5px 15px;
+  }
+}
+
+.messages {
+  &--isAdmin {
+    background-color: pink;
+    height: auto;
+    min-height: 50px;
+    margin: 10px 0;
+    padding: 5px 15px;
+  }
+  &--notAdmin {
+    background-color: $blue;
+    height: auto;
+    min-height: 50px;
+    margin: 10px 0;
+    padding: 5px 15px;
+  }
+  &__form {
+    input[type="text"] {
+      width: 100%;
+      min-height: 250px;
+      margin-bottom: 10px;
+      padding-left: 10px;
+      font-size: 22px;
+    }
+    input[type="submit"] {
+      margin-top: 10px;
+      padding: 10px 16px;
+      background-color: #111;
+      color: #fff;
+      border: 1px solid #111;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 100px;
+    }
+    // input::placeholder {
+    //   padding-left: 10px;
+    // }
   }
 }
