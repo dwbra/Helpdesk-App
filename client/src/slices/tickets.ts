@@ -62,6 +62,23 @@ export const fetchTickets = createAsyncThunk(
   }
 );
 
+type GetImageNames = number | string;
+
+export const getImageNames = createAsyncThunk(
+  "ticket/getImageNames",
+  async (ticket_id: GetImageNames) => {
+    const response = await api.getImageNames(ticket_id);
+    const status = response.status;
+    if (status === 200) {
+      //we need to resolve the promise in the thunk so that the extraReducer knows to use the 'fulfilled' action type
+      return Promise.resolve(response.data);
+    } else {
+      //we need to reject the promise in the thunk so that the extraReducer knows which action type to use
+      return Promise.reject(response.data.message);
+    }
+  }
+);
+
 interface CreateTicket {
   title: string;
   discipline: string;
@@ -151,6 +168,12 @@ export const ticketsSlice = createSlice({
       state.status = "fulfilled";
     });
     builder.addCase(createTicketComment.rejected, (state, action) => {
+      state.status = "failed";
+    });
+    builder.addCase(getImageNames.fulfilled, (state, action) => {
+      state.status = "fulfilled";
+    });
+    builder.addCase(getImageNames.rejected, (state, action) => {
       state.status = "failed";
     });
     // builder.addCase(deleteTicket.fulfilled, (state, {payload}) => {

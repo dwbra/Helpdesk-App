@@ -12,13 +12,21 @@ const API = axios.create({ baseURL: "http://localhost:8000" });
 //need to directly type a single param
 type FetchTicket = string | number;
 
+//fetch all ticket data
 export const fetchTicket = (ticket_id: FetchTicket) =>
-  API.post<FetchTicketResponseData>("/api/get_single_ticket.php", ticket_id);
+  API.post("/api/get_single_ticket.php", ticket_id);
 
 type FetchMessages = string | number;
 
+//fetch comments for each ticket
 export const fetchMessages = (ticketID: FetchMessages) =>
-  API.post<FetchTicketResponseData>("/api/get_messages.php", ticketID);
+  API.post("/api/get_messages.php", ticketID);
+
+type GetImageNames = string | number;
+
+//get the imageNames
+export const getImageNames = (ticket_id: GetImageNames) =>
+  API.post("/api/get_image_names.php", ticket_id);
 
 type FetchTickets = number | string;
 
