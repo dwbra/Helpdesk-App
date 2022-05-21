@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchTicket } from "../../slices/tickets";
 import GetMessages from "./getMessages";
+import GetImages from "./getImages";
 
 const SingleTicket = () => {
   const dispatch = useAppDispatch();
@@ -90,6 +91,7 @@ const SingleTicket = () => {
         </div>
       ))}
       {/* need to specify props on child with any type before declaring on parent */}
+      <GetImages ticketId={ticket_id} />
       <GetMessages ticketId={ticket_id} />
     </>
   );
