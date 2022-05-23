@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store";
-import { fetchTicket } from "../../slices/tickets";
+import { fetchTicket, updateTicketStatus } from "../../slices/tickets";
 import GetMessages from "./getMessages";
 import GetImages from "./getImages";
 
@@ -11,6 +11,7 @@ const SingleTicket = () => {
   //use react router dom to take the ticket_id out of the params sent from the button click on parent component
   const { ticket_id } = useParams();
   const [ticketComplete, setTicketComplete] = useState(false);
+  const userAdmin: any = JSON.parse(localStorage.getItem("profile")!).admin;
 
   useEffect(() => {
     if (!ticket_id) {
@@ -26,8 +27,23 @@ const SingleTicket = () => {
     });
   }, [ticket_id, dispatch]);
 
-  const markTicketAsComplete = () => {
-    console.log("complete this function");
+  const markTicketAsComplete = async () => {
+    const ticketStatus = {
+      ticket_id: ticketData[0]["id"],
+      status: ticketData[0]["status"]
+    };
+    console.log(ticketStatus);
+    if (!ticketStatus) {
+      console.log("no status set in state");
+    }
+    dispatch(updateTicketStatus(ticketStatus)).then((response: any) => {
+      console.log(response);
+      if (response.meta.requestStatus === "fulfilled") {
+        // console.log(response);
+      } else {
+        console.log(response.payload["message"]);
+      }
+    });
   };
 
   return (
@@ -73,16 +89,22 @@ const SingleTicket = () => {
                   {ticket["status"]}
                 </span>
               </h2>
-              {/* insert buttons that have onclick dispatches on them to update ticket status'  */}
-              {ticketComplete ? (
-                <button onClick={markTicketAsComplete}>Ticket Completed</button>
+              {/* based on the status and the user type display different buttons */}
+              {ticketData[0]["status"] !== "open" ? (
+                <button>Ticket Completed</button>
               ) : (
                 <button onClick={markTicketAsComplete}>Mark as complete</button>
+              )}
+              {userAdmin ? (
+                <button onClick={markTicketAsComplete}>Delete Ticket</button>
+              ) : (
+                console.log()
               )}
             </div>
           </div>
         ))}
       </div>
+      <GetImages ticketId={ticket_id} />
       <h3>Your conversation so far</h3>
       {ticketData.map((ticket) => (
         <div className="singleticket__msg" key={ticket["id"]}>
@@ -91,7 +113,6 @@ const SingleTicket = () => {
         </div>
       ))}
       {/* need to specify props on child with any type before declaring on parent */}
-      <GetImages ticketId={ticket_id} />
       <GetMessages ticketId={ticket_id} />
     </>
   );

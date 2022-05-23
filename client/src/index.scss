@@ -115,6 +115,17 @@ $blue: rgb(23, 174, 255);
   &__buttons {
     flex: 40%;
     order: 2;
+    button {
+      margin-top: 10px;
+      padding: 10px 16px;
+      background-color: $blue;
+      color: #fff;
+      border: 1px solid $blue;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 100px;
+    }
   }
   &__msg {
     background: $blue;
@@ -159,8 +170,12 @@ $blue: rgb(23, 174, 255);
       cursor: pointer;
       margin-bottom: 100px;
     }
-    // input::placeholder {
-    //   padding-left: 10px;
-    // }
+  }
+}
+
+.presigned-images {
+  margin: 20px 0;
+  img {
+    margin-right: 20px;
   }
 }

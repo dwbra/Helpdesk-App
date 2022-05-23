@@ -124,6 +124,24 @@ export const createTicketComment = createAsyncThunk(
   }
 );
 
+type TicketStatus = {};
+
+export const updateTicketStatus = createAsyncThunk(
+  "ticket/updateTicketStatus",
+  async (ticketStatus: TicketStatus) => {
+    // console.log(ticketStatus);
+    const response = await api.updateTicketStatus(ticketStatus);
+    const status = response.status;
+    if (status === 200) {
+      //we need to resolve the promise in the thunk so that the extraReducer knows to use the 'fulfilled' action type
+      return Promise.resolve(response.data);
+    } else {
+      //we need to reject the promise in the thunk so that the extraReducer knows which action type to use
+      return Promise.reject(response.data.message);
+    }
+  }
+);
+
 // export const deleteTicket = createAsyncThunk('user/loginUser', async (formData:LoginUserFormData) => {
 //     const response = await api.signIn(formData);
 //     const data = response.data;
@@ -174,6 +192,12 @@ export const ticketsSlice = createSlice({
       state.status = "fulfilled";
     });
     builder.addCase(getImageNames.rejected, (state, action) => {
+      state.status = "failed";
+    });
+    builder.addCase(updateTicketStatus.fulfilled, (state, action) => {
+      state.status = "fulfilled";
+    });
+    builder.addCase(updateTicketStatus.rejected, (state, action) => {
       state.status = "failed";
     });
     // builder.addCase(deleteTicket.fulfilled, (state, {payload}) => {

@@ -31,3 +31,6 @@ post('api', 'get_single_ticket.php');
 
 // new ticket comment
 post('api', 'new_ticket_comment.php');
+
+//update ticket status
+post('api', 'update_ticket_status.php');

@@ -318,9 +318,50 @@ class Form
         } else {
             $ticket_info->rows = "0 results";
         }
-
         return json_encode($ticket_info);
+    }
 
+    public function update_ticket_status()
+    {
+        /* Global $conn*/
+        global $conn;
+
+        //Trim whitespace and use PHP inbuilt filters to sanitize inputs
+        $ticket_id = $this->ticket_id;
+        $updated_ticket_status = $this->ticket_status;
+
+        //check that a db connection to the table has been established
+        if ($conn->connect_error) {
+            $conn_status = new stdClass();
+            $conn_status->message = "Connection failed: " . $conn->connect_error;
+            return json_encode($conn_status);
+        }
+
+        //place the comment into the message db table
+        //prepare the sql statement. Use use ? as placeholders
+        $sql = "UPDATE ticket SET status = (?) WHERE id = (?)";
+        //prepare the sql query and create a statement result from the query
+        $statement = $conn->prepare($sql);
+        //bind the params to the statement. s is for string type, i for int.
+        $statement->bind_param("si", $updated_ticket_status, $ticket_id);
+        //actually execute the the query by sending the variables to the db
+        $statement->execute();
+
+        $ticket_status_info = new stdClass();
+
+        //return false to notify request that submission failed
+        if (!$statement) {
+            $ticket_status_info->status = 401;
+            $ticket_status_info->message = "Adding a new comment to the database has failed. Please try again or contact the system admin.";
+            return json_encode($ticket_status_info);
+        }
+
+        //close the database connection
+        $conn->close();
+
+        //return a successful status
+        $ticket_status_info->status = 200;
+        return json_encode($ticket_status_info);
     }
 
 }
