@@ -13,6 +13,7 @@ class Form
     public $ticket_status;
     public $ticket_id;
     public $comment;
+    public $is_admin;
 
     public function submitTicket()
     {
@@ -85,6 +86,7 @@ class Form
         global $conn;
 
         $userId = $this->userId;
+        $isAdmin = $this->is_admin;
 
         //check that a db connection to the table has been established
         if ($conn->connect_error) {
@@ -93,11 +95,19 @@ class Form
             return json_encode($conn_status);
         }
 
-        $sql = "SELECT * FROM ticket WHERE ticket_user_id = (?)";
-        $statement = $conn->prepare($sql);
-        $statement->bind_param("i", $userId);
-        $statement->execute();
-        $result = $statement->get_result();
+        //if the request comes from an admin, return all tickets else just return specific user tickets based on their ID.
+        if ($isAdmin) {
+            $sql = "SELECT * FROM ticket";
+            $statement = $conn->prepare($sql);
+            $statement->execute();
+            $result = $statement->get_result();
+        } else {
+            $sql = "SELECT * FROM ticket WHERE ticket_user_id = (?)";
+            $statement = $conn->prepare($sql);
+            $statement->bind_param("i", $userId);
+            $statement->execute();
+            $result = $statement->get_result();
+        }
 
         $ticket_info = new stdClass();
         //return false to notify request that submission failed
@@ -233,6 +243,7 @@ class Form
 
         //Trim whitespace and use PHP inbuilt filters to sanitize inputs
         $ticket_id = trim($this->ticket_id);
+        $userId = $this->userId;
         $comment = trim($this->comment);
         $comment = htmlspecialchars($comment, ENT_QUOTES);
 
@@ -245,11 +256,11 @@ class Form
 
         //place the comment into the message db table
         //prepare the sql statement. Use use ? as placeholders
-        $sql = "INSERT INTO ticket_messages (msg, ticket_messages_id) VALUES (?,?)";
+        $sql = "INSERT INTO ticket_messages (msg, ticket_messages_id, admin) VALUES (?,?,?)";
         //prepare the sql query and create a statement result from the query
         $statement = $conn->prepare($sql);
         //bind the params to the statement. s is for string type, i for int.
-        $statement->bind_param("si", $comment, $ticket_id);
+        $statement->bind_param("sii", $comment, $ticket_id, $userId);
         //actually execute the the query by sending the variables to the db
         $statement->execute();
 

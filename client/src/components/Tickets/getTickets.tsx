@@ -5,24 +5,25 @@ import { fetchTickets } from "../../slices/tickets";
 
 const GetTickets = () => {
   const dispatch = useAppDispatch();
-  const userId: any = JSON.parse(localStorage.getItem("profile")!).id;
+  const user: any = JSON.parse(localStorage.getItem("profile")!);
 
   //create a new piece of state to store the API response data into.
   const [tickets, setTickets] = useState([]);
   // console.log(typeof tickets);
   //Store API call inside useEffect hook to only render once on component mount.
   useEffect(() => {
-    if (!userId) {
+    if (!user) {
       return;
     }
-    dispatch(fetchTickets(userId)).then((response: any) => {
+    dispatch(fetchTickets(user)).then((response: any) => {
+      console.log(response);
       if (response.meta.requestStatus === "fulfilled") {
         setTickets(response.payload["rows"]);
       } else {
         alert(response.payload["message"]);
       }
     });
-  }, [userId, dispatch]);
+  }, [user, dispatch]);
 
   return (
     <div className="ticket__layout">

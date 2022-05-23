@@ -9,7 +9,9 @@ global $conn;
 $post = json_decode(file_get_contents("php://input", true));
 // var_dump($post);
 
-$userId = $post;
+$userId = $post->id;
+$isAdmin = $post->admin;
+// echo $isAdmin;
 
 if ($conn->connect_error) {
     $conn_status = new stdClass();
@@ -19,6 +21,7 @@ if ($conn->connect_error) {
 
 $formData = new Form();
 $formData->userId = $userId;
+$formData->is_admin = $isAdmin;
 
 $result = $formData->get_tickets();
 echo $result;

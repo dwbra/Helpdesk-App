@@ -13,12 +13,6 @@ const Auth = () => {
   //define to be able to push uses after a successful response from server
   const navigate = useNavigate();
 
-  const user = useAppSelector((state) => state.user.users);
-  const error = useAppSelector((state) => state.user.error);
-  const status = useAppSelector((state) => state.user.status);
-  // const localStorageUser:any = JSON.parse(localStorage.getItem('profile')!);
-  // console.log(user, status, error);
-
   //set the initial state for the auth form to be signin
   const [isSignup, setIsSignup] = useState(false);
   //create a new set of data for the form and set the initial state as the empty fields above
@@ -47,8 +41,13 @@ const Auth = () => {
         //check the response from the dispatch reducer to ensure it passed server validation
         if (response.meta.requestStatus === "fulfilled") {
           localStorage.setItem("profile", JSON.stringify(response.payload));
-          navigate("/tickets");
-          window.location.reload();
+          if (JSON.parse(localStorage.getItem("profile")!).admin === 1) {
+            navigate("/tickets");
+            window.location.reload();
+          } else {
+            navigate("/tickets");
+            window.location.reload();
+          }
         } else {
           //show the user the error message from the server
           alert(response.payload);
@@ -59,8 +58,13 @@ const Auth = () => {
         dispatch(createUser(formData)).then((response) => {
           if (response.meta.requestStatus === "fulfilled") {
             localStorage.setItem("profile", JSON.stringify(response.payload));
-            navigate("/submit-ticket");
-            window.location.reload();
+            if (JSON.parse(localStorage.getItem("profile")!).admin === 1) {
+              navigate("/tickets");
+              window.location.reload();
+            } else {
+              navigate("/submit-ticket");
+              window.location.reload();
+            }
           } else {
             alert(response.payload);
           }

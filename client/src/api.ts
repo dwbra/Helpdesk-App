@@ -28,7 +28,7 @@ type GetImageNames = string | number;
 export const getImageNames = (ticket_id: GetImageNames) =>
   API.post("/api/get_image_names.php", ticket_id);
 
-type FetchTickets = number | string;
+type FetchTickets = {};
 
 interface FetchTicketResponseData {
   title: string;
@@ -41,8 +41,8 @@ interface FetchTicketResponseData {
   message: string;
 }
 
-export const fetchTickets = (userId: FetchTickets) =>
-  API.post<FetchTicketResponseData>("/api/get_all_user_tickets.php", userId);
+export const fetchTickets = (user: FetchTickets) =>
+  API.post<FetchTicketResponseData>("/api/get_all_user_tickets.php", user);
 
 interface CreateTicket {
   title: string;
@@ -74,6 +74,7 @@ interface CreateTicketCommentResponse {
 interface CreateTicketComment {
   comment: string;
   ticketID: string | undefined;
+  userId: string | number;
 }
 
 export const createTicketComment = (commentData: CreateTicketComment) =>
