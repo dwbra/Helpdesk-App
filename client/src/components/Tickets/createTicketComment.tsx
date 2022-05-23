@@ -7,11 +7,12 @@ const CreateTicketComment = (props: any) => {
   //   const userAdmin: any = JSON.parse(localStorage.getItem("profile")!);
   const ticket_id = props.ticketId;
   const dispatch = useAppDispatch();
-  //   console.log(ticket_id);
+  const userAdmin: any = JSON.parse(localStorage.getItem("profile")!).admin;
 
   const [commentData, setCommentData] = useState({
     comment: "",
-    ticketID: ticket_id
+    ticketID: ticket_id,
+    userId: userAdmin
   });
 
   const commentSubmit = (e: any) => {
@@ -31,7 +32,8 @@ const CreateTicketComment = (props: any) => {
   const clear = () => {
     setCommentData({
       comment: "",
-      ticketID: ticket_id
+      ticketID: ticket_id,
+      userId: userAdmin
     });
   };
 

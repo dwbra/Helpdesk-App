@@ -11,6 +11,7 @@ $post = json_decode(file_get_contents("php://input", true));
 
 $comment = $post->comment;
 $ticket_id = $post->ticketID;
+$userId = $post->userId;
 
 if ($conn->connect_error) {
     $conn_status = new stdClass();
@@ -21,6 +22,7 @@ if ($conn->connect_error) {
 $commentData = new Form();
 $commentData->ticket_id = $ticket_id;
 $commentData->comment = $comment;
+$commentData->userId = $userId;
 
 $result = $commentData->createTicketComment();
 echo $result;

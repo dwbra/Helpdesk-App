@@ -45,12 +45,12 @@ export const fetchMessages = createAsyncThunk(
   }
 );
 
-type FetchTickets = number | string;
+type FetchTickets = {};
 
 export const fetchTickets = createAsyncThunk(
   "ticket/fetchTicket",
-  async (userId: FetchTickets) => {
-    const response = await api.fetchTickets(userId);
+  async (user: FetchTickets) => {
+    const response = await api.fetchTickets(user);
     const status = response.status;
     if (status === 200) {
       //we need to resolve the promise in the thunk so that the extraReducer knows to use the 'fulfilled' action type
@@ -107,6 +107,7 @@ export const createTicket = createAsyncThunk(
 interface CreateTicketComment {
   comment: string;
   ticketID: string | undefined;
+  userId: string | number;
 }
 
 export const createTicketComment = createAsyncThunk(
