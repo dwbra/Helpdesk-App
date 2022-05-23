@@ -8,6 +8,7 @@ const GetImages = (props: any) => {
   const ticket_id = props.ticketId;
   const [ticketNames, setTicketNames] = useState([]);
   const dispatch = useAppDispatch();
+  const [ticketSigURL, setticketSigURL] = useState([]);
 
   //handle all get/post side effects in the useEffect
   useEffect(() => {
@@ -31,7 +32,8 @@ const GetImages = (props: any) => {
         await axios
           .post("http://localhost:8000/api/get_s3_images.php", ticketNames)
           .then((response) => {
-            console.log(response);
+            const data = response.data;
+            setticketSigURL(data);
           })
           .catch((error) => {
             console.log(error);
@@ -41,9 +43,15 @@ const GetImages = (props: any) => {
     getAllImages();
   }, [props]);
 
-  //   console.log(ticketNames);
-
-  return <></>;
+  return (
+    <>
+      <div className="presigned-images">
+        {ticketSigURL.map((image) => (
+          <img src={image} alt="ticket images" key={image} />
+        ))}
+      </div>
+    </>
+  );
 };
 
 export default GetImages;

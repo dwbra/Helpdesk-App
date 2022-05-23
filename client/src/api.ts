@@ -82,6 +82,11 @@ export const createTicketComment = (commentData: CreateTicketComment) =>
     commentData
   );
 
+type TicketStatus = {};
+
+export const updateTicketStatus = (ticketStatus: TicketStatus) =>
+  API.post("/api/update_ticket_status.php", ticketStatus);
+
 interface CreateUserFormData {
   name: string;
   email: string;

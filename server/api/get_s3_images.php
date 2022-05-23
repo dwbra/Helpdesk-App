@@ -16,20 +16,31 @@ $client = new \Aws\S3\S3Client([
     ],
 ]);
 
-$image_keys = json_decode(file_get_contents("php://input", true));
-// var_dump($image_keys);
+$image_data = json_decode(file_get_contents("php://input", true));
+// var_dump($image_keys[0]);
+$image_keys = $image_data[0];
 
+//create an empty array to store the image URLS into
 $response = [];
 
+//create a pre-signed URL ensuring the images are accessed securly only by you
+// https:docs.aws.amazon.com/sdk-for-php/v3/developer-guide/s3-presigned-url.html
 try {
     $post_size = sizeof($image_keys);
     for ($i = 0; $i < $post_size; $i++) {
-        $result = $client->getObject($bucket, array($image_keys[$i]));
-        array_push($response, $result);
+        $result = $client->getCommand('GetObject', [
+            "Bucket" => $bucket,
+            "Key" => $image_keys[$i],
+        ]);
+        $request = $client->createPresignedRequest($result, '+20 minutes');
+        $presignedUrl = (string) $request->getUri();
+        // var_dump($presignedUrl);
+        array_push($response, $presignedUrl);
     }
 } catch (S3Exception $e) {
     // Catch an S3 specific exception.
     echo $e->getMessage();
 }
 
-return json_encode($response);
+// var_dump($response);
+echo json_encode($response);
