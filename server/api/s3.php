@@ -1,6 +1,5 @@
 <?php
 require '../index.php';
-
 //set the db connection credentials using dotenv to store them securely
 $apiKey = $_ENV['s3Key'];
 $apiSecret = $_ENV['s3Secret'];
@@ -18,7 +17,6 @@ $client = new \Aws\S3\S3Client([
     ],
 ]);
 $post = json_decode(file_get_contents("php://input", true));
-// var_dump($post);
 
 $post_size = sizeof($post);
 $keyArray = [];
@@ -34,7 +32,6 @@ for ($i = 0; $i < $post_size; $i++) {
     $result = base64_decode(end($imageData));
 
     try {
-        // print_r($client->upload($bucket, $key, $result));
         $client->upload($bucket, $key, $result);
     } catch (S3Exception $e) {
         // Catch an S3 specific exception.

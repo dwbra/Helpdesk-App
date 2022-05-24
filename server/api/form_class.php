@@ -15,7 +15,7 @@ class Form
     public $comment;
     public $is_admin;
 
-    public function submitTicket()
+    public function submit_ticket()
     {
         /* Global $conn*/
         global $conn;
@@ -73,11 +73,6 @@ class Form
         //return a successful status
         $ticket_info->status = 200;
         return json_encode($ticket_info);
-    }
-
-    public function update_ticket()
-    {
-
     }
 
     public function get_tickets()
@@ -184,11 +179,6 @@ class Form
         return json_encode($ticket_info);
     }
 
-    public function change_ticket_status()
-    {
-
-    }
-
     public function get_messages()
     {
         /* Global $conn*/
@@ -236,7 +226,7 @@ class Form
         return json_encode($ticket_info);
     }
 
-    public function createTicketComment()
+    public function create_ticket_comment()
     {
         /* Global $conn*/
         global $conn;
