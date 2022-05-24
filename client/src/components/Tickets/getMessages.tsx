@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchMessages } from "../../slices/tickets";
 import CreateTicketComment from "./createTicketComment";
@@ -6,7 +6,7 @@ import CreateTicketComment from "./createTicketComment";
 const GetMessages = (props: any) => {
   const dispatch = useAppDispatch();
   //store dispatch response into state
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<any[]>([]);
   //take props from the parent and save ticket_id in new variable
   const ticket_id = props.ticketId;
 
@@ -22,7 +22,7 @@ const GetMessages = (props: any) => {
         alert(response.payload["message"]);
       }
     });
-  }, [ticket_id, dispatch, messages]);
+  }, [ticket_id]);
 
   const messageCSS = (message: any) => {
     for (let i = 0; i < messages.length; i++) {
@@ -37,14 +37,15 @@ const GetMessages = (props: any) => {
   return (
     <>
       <div>
-        {messages.map((message) => (
-          //on ever map iteration, envoke messageCSS function and pass the current message object as the param.
-          //then based on if this particular message is an admin or not, set the css to be different on the message
-          <div className={messageCSS(message)} key={message["id"]}>
-            {message["admin"] === 0 ? <p>you said:</p> : <p>admin said:</p>}
-            <p>{message["msg"]}</p>
-          </div>
-        ))}
+        {messages.length > 0 &&
+          messages.map((message) => (
+            //on every map iteration, envoke messageCSS function and pass the current message object as the param.
+            //then based on if this particular message is an admin or not, set the css to be different on the message
+            <div className={messageCSS(message)} key={message["id"]}>
+              {message["admin"] === 0 ? <p>you said:</p> : <p>admin said:</p>}
+              <p>{message["msg"]}</p>
+            </div>
+          ))}
       </div>
       <CreateTicketComment ticketId={ticket_id} />
     </>

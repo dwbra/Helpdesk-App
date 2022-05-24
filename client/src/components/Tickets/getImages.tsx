@@ -44,9 +44,10 @@ const GetImages = (props: any) => {
   return (
     <>
       <div className="presigned-images">
-        {ticketSigURL.map((image) => (
-          <img src={image} alt="ticket images" key={image} />
-        ))}
+        {ticketSigURL.length > 0 &&
+          ticketSigURL.map((image) => (
+            <img src={image} alt="ticket images" key={image} />
+          ))}
       </div>
     </>
   );
