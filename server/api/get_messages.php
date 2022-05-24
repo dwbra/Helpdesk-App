@@ -2,12 +2,8 @@
 //include the db connection and auth class
 require_once '../index.php';
 require_once './form_class.php';
-
-//declare globals and variables
-global $conn;
 //decode the raw data from the request body
 $post = json_decode(file_get_contents("php://input", true));
-// var_dump($post);
 
 $ticket_id = $post;
 

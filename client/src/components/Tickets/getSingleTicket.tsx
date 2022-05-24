@@ -89,7 +89,7 @@ const SingleTicket = () => {
               </h2>
               {/* based on the status and the user type display different buttons */}
               {ticketData[0]["status"] !== "open" ? (
-                <button>Ticket Completed</button>
+                <button>Ticket Resolved</button>
               ) : (
                 <button onClick={markTicketAsComplete}>Mark as complete</button>
               )}

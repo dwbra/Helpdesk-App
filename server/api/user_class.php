@@ -23,15 +23,8 @@ class User
     /* TRUE if the user is authenticated, FALSE otherwise */
     private $admin;
 
-    // // Validate e-mail
-    // if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
-    //   echo("$email is a valid email address");
-    // } else {
-    //   echo("$email is not a valid email address");
-    // }
-
     /* Add a new account to the system and return its ID (the account_id column of the accounts table) */
-    public function addUser()
+    public function add_user()
     {
         /* Global $conn*/
         global $conn;
@@ -115,7 +108,7 @@ class User
     }
 
     /* Login with username and password */
-    public function login()
+    public function user_login()
     {
         /* Global $conn object */
         global $conn;
@@ -145,8 +138,6 @@ class User
         $result = $statement->get_result();
         //fetch a particular rows data
         $user = $result->fetch_assoc();
-
-        // var_dump($user);
 
         if (is_array($user)) {
             if (password_verify($password, $user['password'])) {

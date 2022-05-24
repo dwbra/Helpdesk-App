@@ -10,8 +10,6 @@ session_start();
 require_once '../index.php';
 require_once './user_class.php';
 
-//declare globals
-global $conn;
 //decode the raw data from the request body
 $post = json_decode(file_get_contents("php://input"), true);
 
@@ -36,6 +34,6 @@ $new_user->password = $password;
 $new_user->confirmed = $confirmedPW;
 
 //call the addUser method on the new instance and get the result
-$result = $new_user->addUser();
+$result = $new_user->add_user();
 //echo the result so that it is received by the AXIOS request as the response
 echo $result;

@@ -111,4 +111,4 @@ interface AuthResponseData {
 export const signUp = (formData: CreateUserFormData) =>
   API.post<AuthResponseData>("/api/create_user.php", formData);
 export const signIn = (formData: LoginUserFormData) =>
-  API.post<AuthResponseData>("/api/login.php", formData);
+  API.post<AuthResponseData>("/api/user_login.php", formData);

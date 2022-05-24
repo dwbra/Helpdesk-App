@@ -1,6 +1,5 @@
 <?php
 require '../index.php';
-
 //set the db connection credentials using dotenv to store them securely
 $apiKey = $_ENV['s3Key'];
 $apiSecret = $_ENV['s3Secret'];
@@ -17,7 +16,6 @@ $client = new \Aws\S3\S3Client([
 ]);
 
 $image_data = json_decode(file_get_contents("php://input", true));
-// var_dump($image_keys[0]);
 $image_keys = $image_data[0];
 
 //create an empty array to store the image URLS into
@@ -34,7 +32,6 @@ try {
         ]);
         $request = $client->createPresignedRequest($result, '+20 minutes');
         $presignedUrl = (string) $request->getUri();
-        // var_dump($presignedUrl);
         array_push($response, $presignedUrl);
     }
 } catch (S3Exception $e) {
@@ -42,5 +39,4 @@ try {
     echo $e->getMessage();
 }
 
-// var_dump($response);
 echo json_encode($response);
