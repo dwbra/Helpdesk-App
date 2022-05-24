@@ -220,8 +220,6 @@ class Form
                 // print_r($row);
                 array_push($ticket_info->rows, $row);
             }
-        } else {
-            $ticket_info->rows = "0 results";
         }
         return json_encode($ticket_info);
     }
@@ -316,8 +314,6 @@ class Form
                 $unserialized = unserialize($images);
                 array_push($ticket_info->rows, $unserialized);
             }
-        } else {
-            $ticket_info->rows = "0 results";
         }
         return json_encode($ticket_info);
     }

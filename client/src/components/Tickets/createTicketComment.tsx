@@ -22,6 +22,8 @@ const CreateTicketComment = (props: any) => {
         alert(response.payload["message"]);
       }
     });
+    //cheat way need to signal re render to parent component after function complete
+    // window.location.reload();
   };
 
   const clear = () => {
