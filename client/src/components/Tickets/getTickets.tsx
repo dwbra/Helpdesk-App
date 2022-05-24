@@ -1,12 +1,16 @@
 import React, { useEffect, useState, CSSProperties } from "react";
 import { useAppDispatch, useAppSelector } from "../../store";
-import { useNavigate } from "react-router-dom";
 import { fetchTickets } from "../../slices/tickets";
 
 const GetTickets = () => {
   const dispatch = useAppDispatch();
-  const user: any = JSON.parse(localStorage.getItem("profile")!);
-
+  interface UserProfile {
+    id: number;
+    email: string;
+    admin: number;
+    status: number;
+  }
+  const user: UserProfile = JSON.parse(localStorage.getItem("profile")!);
   //create a new piece of state to store the API response data into.
   const [tickets, setTickets] = useState([]);
   // console.log(typeof tickets);
@@ -16,14 +20,13 @@ const GetTickets = () => {
       return;
     }
     dispatch(fetchTickets(user)).then((response: any) => {
-      console.log(response);
       if (response.meta.requestStatus === "fulfilled") {
         setTickets(response.payload["rows"]);
       } else {
         alert(response.payload["message"]);
       }
     });
-  }, [user, dispatch]);
+  }, []);
 
   return (
     <div className="ticket__layout">

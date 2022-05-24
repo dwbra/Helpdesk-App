@@ -11,7 +11,7 @@ const SingleTicket = () => {
   //use react router dom to take the ticket_id out of the params sent from the button click on parent component
   const { ticket_id } = useParams();
   const [ticketComplete, setTicketComplete] = useState(false);
-  const userAdmin: any = JSON.parse(localStorage.getItem("profile")!).admin;
+  const userAdmin: number = JSON.parse(localStorage.getItem("profile")!).admin;
 
   useEffect(() => {
     if (!ticket_id) {
@@ -32,14 +32,12 @@ const SingleTicket = () => {
       ticket_id: ticketData[0]["id"],
       status: ticketData[0]["status"]
     };
-    console.log(ticketStatus);
     if (!ticketStatus) {
       console.log("no status set in state");
+      return;
     }
     dispatch(updateTicketStatus(ticketStatus)).then((response: any) => {
-      console.log(response);
       if (response.meta.requestStatus === "fulfilled") {
-        // console.log(response);
       } else {
         console.log(response.payload["message"]);
       }

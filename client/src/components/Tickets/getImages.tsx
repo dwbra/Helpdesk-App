@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { getImageNames } from "../../slices/tickets";
 import axios from "axios";
@@ -15,12 +14,11 @@ const GetImages = (props: any) => {
     if (!ticket_id) {
       return;
     }
-    //async thunk from the slice dispatches the request to get the dat from the api
+    //async thunk from the slice dispatches the request to get the data from the api
     dispatch(getImageNames(ticket_id)).then((response: any) => {
       if (response.meta.requestStatus === "fulfilled") {
         const responseTicketNames = response.payload.rows;
         setTicketNames(responseTicketNames);
-        // console.log(ticketNames);
       } else {
         alert(response.payload["message"]);
       }

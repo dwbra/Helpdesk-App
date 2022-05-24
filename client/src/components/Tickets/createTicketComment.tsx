@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { createTicketComment } from "../../slices/tickets";
 
 const CreateTicketComment = (props: any) => {
-  //   const userAdmin: any = JSON.parse(localStorage.getItem("profile")!);
-  const ticket_id = props.ticketId;
+  const ticket_id: number = props.ticketId;
   const dispatch = useAppDispatch();
-  const userAdmin: any = JSON.parse(localStorage.getItem("profile")!).admin;
+  const userAdmin: number = JSON.parse(localStorage.getItem("profile")!).admin;
 
   const [commentData, setCommentData] = useState({
     comment: "",
@@ -18,15 +16,12 @@ const CreateTicketComment = (props: any) => {
   const commentSubmit = (e: any) => {
     e.preventDefault();
     dispatch(createTicketComment(commentData)).then((response: any) => {
-      console.log(response);
       if (response.meta.requestStatus === "fulfilled") {
         clear();
       } else {
         alert(response.payload["message"]);
       }
     });
-    //cheat way. Need to force the component re-render.
-    window.location.reload();
   };
 
   const clear = () => {

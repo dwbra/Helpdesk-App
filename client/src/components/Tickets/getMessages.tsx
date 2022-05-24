@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchMessages } from "../../slices/tickets";
 import CreateTicketComment from "./createTicketComment";
@@ -23,7 +22,7 @@ const GetMessages = (props: any) => {
         alert(response.payload["message"]);
       }
     });
-  }, [ticket_id, dispatch]);
+  }, [ticket_id, dispatch, messages]);
 
   const messageCSS = (message: any) => {
     for (let i = 0; i < messages.length; i++) {

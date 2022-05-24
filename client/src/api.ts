@@ -73,7 +73,7 @@ interface CreateTicketCommentResponse {
 
 interface CreateTicketComment {
   comment: string;
-  ticketID: string | undefined;
+  ticketID: number;
   userId: string | number;
 }
 

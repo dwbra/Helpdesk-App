@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ErrorSharp, Visibility, VisibilityOff } from "@material-ui/icons/";
+import { Visibility, VisibilityOff } from "@material-ui/icons/";
 import { Input, Button, InputAdornment, IconButton } from "@material-ui/core/";
 import authFormValidation from "../validations/authForm";
-
-import { useSelector } from "react-redux";
-import { createUser, loginUser, userSlice } from "../slices/user";
-import { RootState, useAppDispatch, useAppSelector } from "../store";
+import { createUser, loginUser } from "../slices/user";
+import { useAppDispatch, useAppSelector } from "../store";
 
 const Auth = () => {
   const dispatch = useAppDispatch();
@@ -36,6 +34,7 @@ const Auth = () => {
   //handle the data once auth form submitted
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    //if the user already exists and wants to log in
     if (isSignup === false) {
       await dispatch(loginUser(formData)).then((response) => {
         //check the response from the dispatch reducer to ensure it passed server validation
@@ -54,6 +53,7 @@ const Auth = () => {
         }
       });
     } else {
+      //if they are creating a new user
       if (authFormValidation(formData) === true) {
         dispatch(createUser(formData)).then((response) => {
           if (response.meta.requestStatus === "fulfilled") {
@@ -73,7 +73,8 @@ const Auth = () => {
     }
   };
 
-  //when any input field in the formData state is updated it will take a copy of the initial state and save the new value in the corresponding name field.
+  //when any input field in the formData state is updated it will take a copy of the initial state
+  //and save the new value in the corresponding name field.
   const handleChange = (event: any) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
     // console.log(event.target.value);

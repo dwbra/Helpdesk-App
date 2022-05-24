@@ -2,15 +2,13 @@ import React, { useEffect, useState, CSSProperties } from "react";
 import axios from "axios";
 import ImageUploading from "react-images-uploading";
 import ticketFormValidation from "../validations/ticketForm";
-
-import { useSelector } from "react-redux";
 import { createTicket } from "../slices/tickets";
 import { useAppDispatch, useAppSelector } from "../store";
 
 const TicketForm = () => {
   const dispatch = useAppDispatch();
   //grab the users info from local storage
-  const userId: any = JSON.parse(localStorage.getItem("profile")!).id;
+  const userId: number = JSON.parse(localStorage.getItem("profile")!).id;
   //create the state for the ticket data and setter function
   const [ticketData, setTicketData] = useState({
     title: "",

@@ -6,7 +6,13 @@ import { useNavigate } from "react-router-dom";
 const Navbar = () => {
   //get the user if it exists in local storage
   //set user to expect an array of strings, Use exclamation mark at end to tell TSC to ignore warning as you know its fine
-  const user: any = JSON.parse(localStorage.getItem("profile")!);
+  interface UserProfile {
+    id: number;
+    email: string;
+    admin: number;
+    status: number;
+  }
+  const user: UserProfile = JSON.parse(localStorage.getItem("profile")!);
   const [isAdmin, setIsAdmin] = useState(0);
 
   useEffect(() => {
