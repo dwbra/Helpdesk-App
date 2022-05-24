@@ -77,7 +77,10 @@ export const userSlice = createSlice({
     });
     builder.addCase(createUser.rejected, (state, action) => {
       state.status = "failed";
+      //can only access the action error in the reducer therefore need to set it as the payload
       state.error = action.error.message!;
+      //set the payload as the rejected thunk error message
+      action.payload = state.error;
     });
     builder.addCase(loginUser.fulfilled, (state, action) => {
       state.status = "fulfilled";
@@ -85,9 +88,7 @@ export const userSlice = createSlice({
     });
     builder.addCase(loginUser.rejected, (state, action) => {
       state.status = "failed";
-      //can only access the action error in the reducer therefore need to set it as the payload
       state.error = action.error.message!;
-      //set the payload as the rejected thunk error message
       action.payload = state.error;
     });
   }

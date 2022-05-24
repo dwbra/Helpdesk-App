@@ -45,11 +45,16 @@ export const fetchMessages = createAsyncThunk(
   }
 );
 
-type FetchTickets = {};
+interface UserProfile {
+  id: number;
+  email: string;
+  admin: number;
+  status: number;
+}
 
 export const fetchTickets = createAsyncThunk(
   "ticket/fetchTicket",
-  async (user: FetchTickets) => {
+  async (user: UserProfile) => {
     const response = await api.fetchTickets(user);
     const status = response.status;
     if (status === 200) {
@@ -106,7 +111,7 @@ export const createTicket = createAsyncThunk(
 
 interface CreateTicketComment {
   comment: string;
-  ticketID: string | undefined;
+  ticketID: number;
   userId: string | number;
 }
 
@@ -125,7 +130,10 @@ export const createTicketComment = createAsyncThunk(
   }
 );
 
-type TicketStatus = {};
+interface TicketStatus {
+  ticket_id: number;
+  status: number;
+}
 
 export const updateTicketStatus = createAsyncThunk(
   "ticket/updateTicketStatus",
@@ -160,15 +168,17 @@ export const ticketsSlice = createSlice({
     });
     builder.addCase(fetchTickets.rejected, (state, action) => {
       state.status = "failed";
+      //can only access the action error in the reducer therefore need to set it as the payload
+      state.error = action.error.message!;
+      //set the payload as the rejected thunk error message
+      action.payload = state.error;
     });
     builder.addCase(createTicket.fulfilled, (state, action) => {
       state.status = "fulfilled";
     });
     builder.addCase(createTicket.rejected, (state, action) => {
       state.status = "failed";
-      //can only access the action error in the reducer therefore need to set it as the payload
       state.error = action.error.message!;
-      //set the payload as the rejected thunk error message
       action.payload = state.error;
     });
     builder.addCase(fetchTicket.fulfilled, (state, action) => {
@@ -176,30 +186,40 @@ export const ticketsSlice = createSlice({
     });
     builder.addCase(fetchTicket.rejected, (state, action) => {
       state.status = "failed";
+      state.error = action.error.message!;
+      action.payload = state.error;
     });
     builder.addCase(fetchMessages.fulfilled, (state, action) => {
       state.status = "fulfilled";
     });
     builder.addCase(fetchMessages.rejected, (state, action) => {
       state.status = "failed";
+      state.error = action.error.message!;
+      action.payload = state.error;
     });
     builder.addCase(createTicketComment.fulfilled, (state, action) => {
       state.status = "fulfilled";
     });
     builder.addCase(createTicketComment.rejected, (state, action) => {
       state.status = "failed";
+      state.error = action.error.message!;
+      action.payload = state.error;
     });
     builder.addCase(getImageNames.fulfilled, (state, action) => {
       state.status = "fulfilled";
     });
     builder.addCase(getImageNames.rejected, (state, action) => {
       state.status = "failed";
+      state.error = action.error.message!;
+      action.payload = state.error;
     });
     builder.addCase(updateTicketStatus.fulfilled, (state, action) => {
       state.status = "fulfilled";
     });
     builder.addCase(updateTicketStatus.rejected, (state, action) => {
       state.status = "failed";
+      state.error = action.error.message!;
+      action.payload = state.error;
     });
     // builder.addCase(deleteTicket.fulfilled, (state, {payload}) => {
     //     state.status = "fulfilled";
@@ -211,9 +231,6 @@ export const ticketsSlice = createSlice({
     // })
   }
 });
-
-//set action types and export them ready for use
-// export const {getTickets, updateTicket, deleteTicket} = ticketsSlice.actions;
 
 //export all reducers as default to be able to be used in store reducer
 export default ticketsSlice.reducer;
