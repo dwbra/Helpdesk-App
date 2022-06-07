@@ -27,11 +27,13 @@ Daniel
 To setup and run:
 
 in one terminal tab -
-cd into client
-yarn install
-yarn start
+
+- cd into client
+- yarn install
+- yarn start
 
 in second terminal tab -
-cd into server
-composer install
-php -S localhost:8000
+
+- cd into server
+- composer install
+- php -S localhost:8000
