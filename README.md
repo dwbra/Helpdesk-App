@@ -20,9 +20,8 @@ As I'm not a designer, and as css was not the focus of this project the styling 
 
 Note - Throughout the process I was learning git correctly and had some serious issues merging branches. So instead of battling through and figuring it out I just deleted the repo from Github and pushed up my local version or sometimes even vise versa. This explains why there isn't far more commits than would be expected in a self taught project like this!
 
-Happy to answer any questions if you do fork the repo.
-Cheers,
-Daniel
+Happy to answer any questions if you do fork the repo.  
+Cheers, Daniel
 
 To setup and run:
 
