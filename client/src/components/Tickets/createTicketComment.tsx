@@ -3,7 +3,8 @@ import { useAppDispatch, useAppSelector } from "../../store";
 import { createTicketComment } from "../../slices/tickets";
 
 const CreateTicketComment = (props: any) => {
-  const ticket_id: number = props.ticketId;
+  //destructure props to directly access
+  const { onCreateTicketComment, ticket_id } = props;
   const dispatch = useAppDispatch();
   const userAdmin: number = JSON.parse(localStorage.getItem("profile")!).admin;
 
@@ -15,6 +16,10 @@ const CreateTicketComment = (props: any) => {
 
   const commentSubmit = (e: any) => {
     e.preventDefault();
+    //create a new constant "newlyCreatedTicketComment" and assign it the value of comment via destructuring method
+    const { comment: newlyCreatedTicketComment } = commentData;
+    //run callback on comment creation
+    onCreateTicketComment(newlyCreatedTicketComment);
     dispatch(createTicketComment(commentData)).then((response: any) => {
       if (response.meta.requestStatus === "fulfilled") {
         clear();
